@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class NumeroNegativoExcepcion extends Throwable {
@@ -18,9 +19,13 @@ public class NumeroNegativoExcepcion extends Throwable {
 
     public NumeroNegativoExcepcion(String abc){
         Scanner ns = new Scanner(System.in);
-        int abc = ns.nextLine();
+        abc = ns.nextLine();
         caracterEN(abc);
     }
+
+    private void caracterEN(String abc) {
+    }
+
     public NumeroNegativoExcepcion(){
 
     }

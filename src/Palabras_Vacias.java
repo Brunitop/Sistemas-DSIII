@@ -91,7 +91,7 @@ public class Palabras_Vacias {
                     }
 
                     // si la palabra no esta en la lista, agregar a la lista
-                    if ( !list.contains(theWord) && !stops.contains(theWord)) {
+                    if ( !list.contains(theWord)) {
                         list.add(theWord);
                     }
                 }
@@ -99,6 +99,7 @@ public class Palabras_Vacias {
             inputFile.close();
             fi.close();
 
+            list.removeAll(stops);
             // Mostrar total de palabras diferentes
             System.out.println("Total de Palabras diferentes: " +  list.size());
             System.out.println("Palabras diferentes: " + list);

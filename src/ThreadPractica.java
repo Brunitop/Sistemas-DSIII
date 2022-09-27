@@ -1,5 +1,3 @@
-import java.util.Scanner;
-
 public class ThreadPractica implements Runnable{
     static int fact;
     public ThreadPractica(int x){

@@ -31,7 +31,6 @@ public class PokerHand {
 
 
         for(Object i: hand1) {
-            System.out.print(());
         }
         System.out.println();
     }

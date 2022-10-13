@@ -1,8 +1,28 @@
-public class Hare {
-    private int position;
+public class Hare implements Runnable{
+    private static int position;
     private boolean winner = false;
     public Hare(int position){
-        this.position = position;
+        Hare.position = position;
+    }
+
+    public void run() {
+        boolean fin = false;
+        while(!fin){
+            int turno1 = (int) Math.floor(Math.random()*(100)+1);
+            try {
+                liebreTurno(turno1);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            int p1 = (int) get();
+
+            for(int i = 0; i < p1; i++){
+                System.out.print(" ");
+            }
+            System.out.println("L");
+
+            LiebreTortugaMain.getWinner(position);
+        }
     }
     public synchronized void duerme() throws InterruptedException{
         // Esperar un segundo y ejecutar accion
@@ -45,10 +65,22 @@ public class Hare {
         notifyAll();
         return position;
     }
-    public synchronized boolean getWinner(){
-        if(position >= 70){
-            winner = true;
+
+    public void liebreTurno(int valor) throws InterruptedException {
+        if(0 < valor && valor < 21){
+            duerme();
         }
-        return winner;
+        else if(21 < valor && valor < 41){
+            granSalto();
+        }
+        else if(41 < valor && valor < 51){
+            resbalonGrande();
+        }
+        else if(51 < valor && valor < 81){
+            saltoChico();
+        }
+        else{
+            resbalonChico();
+        }
     }
 }

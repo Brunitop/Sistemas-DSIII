@@ -7,10 +7,18 @@ public class PieChart extends JComponent implements Runnable{
     Graphics2D g2;
 
     public void paintComponent(Graphics g) {
+        if(image == null) {
+            image = createImage(getSize().width, getSize().height);
+            g2 = (Graphics2D) image.getGraphics();
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                    RenderingHints.VALUE_ANTIALIAS_ON);
+            g2.setPaint(Color.white);
+            g2.fillRect(0, 0, getSize().width, getSize().height);
+            repaint();
+        }
+        g.drawImage(image, 0, 0, null);
         Arc2D.Float arc = new Arc2D.Float(Arc2D.PIE);
         arc.setFrame(225, 80, 150, 150);
-        image = createImage(getSize().width, getSize().height);
-        g2 = (Graphics2D) image.getGraphics();
 
             int[] ventas = new int[4];
             for (int i = 0; i < 4; i++) {
@@ -22,7 +30,6 @@ public class PieChart extends JComponent implements Runnable{
             for (int i = 0; i < 4; i++) {
                 c = c + ventas[i];
             }
-            System.out.println();
 
             double[] percent = new double[4];
             for (int i = 0; i < 4; i++) {
@@ -35,7 +42,6 @@ public class PieChart extends JComponent implements Runnable{
             double missingAmount = 360 - sumAngles;
             for (int i = 0; i < 4; i++) {
                 percent[i] = percent[i] + (missingAmount / 4);
-                System.out.println(percent[i]);
             }
 
             // 0 - 80 degrees
@@ -68,21 +74,14 @@ public class PieChart extends JComponent implements Runnable{
             g2.draw(arc);
             g2.setColor(Color.yellow);
             g2.fill(arc);
-
-            g2.setColor(Color.white);
-            g2.fillRect(0, 0, getSize().width, getSize().height);
-            repaint();
         }
-    public void clear() {
-        g2.setPaint(Color.white);
-        g2.fillRect(0, 0, getSize().width, getSize().height);
-        g2.setPaint(Color.black);
-        repaint();
-    }
 
     public void run(){
         while(true){
-            clear();
+            g2.setPaint(Color.white);
+            g2.fillRect(0, 0, getSize().width, getSize().height);
+            repaint();
+
             try {
                 Thread.currentThread().sleep(5000);
             } catch (InterruptedException e) {

@@ -6,6 +6,9 @@ public class PieChart extends JComponent implements Runnable{
     Image image;
     Graphics2D g2;
 
+    public PieChart(JFrame frame){
+        super();
+    }
     public void paintComponent(Graphics g) {
         if(image == null) {
             image = createImage(getSize().width, getSize().height);
@@ -78,10 +81,7 @@ public class PieChart extends JComponent implements Runnable{
 
     public void run(){
         while(true){
-            g2.setPaint(Color.white);
-            g2.fillRect(0, 0, getSize().width, getSize().height);
             repaint();
-
             try {
                 Thread.currentThread().sleep(5000);
             } catch (InterruptedException e) {

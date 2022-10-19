@@ -3,7 +3,6 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.Rectangle2D;
 
 public class PongGame extends JComponent implements Runnable, KeyListener {
     Dimension preferredSize = null;
@@ -53,13 +52,6 @@ public class PongGame extends JComponent implements Runnable, KeyListener {
         g2.fill(ball);
         g2.fill(paddle1.getRectangle());
         g2.fill(paddle2.getRectangle());
-        /*
-        g2.draw(new Line2D.Double(insets.left, insets.top, getWidth()
-                - insets.right, getHeight() - insets.bottom));
-        g2.draw(new Line2D.Double(insets.left, getHeight() - insets.bottom,
-                getWidth() - insets.right, insets.top));
-
-         */
     }
 
     public Dimension getPreferredSize() {
@@ -77,7 +69,7 @@ public class PongGame extends JComponent implements Runnable, KeyListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
-        System.out.println("KEYTYPED");
+        //presionado una vez
     }
 
     @Override
@@ -101,12 +93,11 @@ public class PongGame extends JComponent implements Runnable, KeyListener {
                 paddle2.moveDown();
                 break;
         }
-        System.out.println("KEYTYPED");
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        System.out.println("KEYRELEASED");
+        //dejar de presionar
     }
 
     @Override

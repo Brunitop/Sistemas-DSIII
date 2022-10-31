@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
-
 public class SalesSAX extends DefaultHandler {
     private static final String CLASS_NAME = SalesSAX.class.getName();
     private final static Logger LOG = Logger.getLogger(CLASS_NAME);

@@ -6,6 +6,7 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -13,14 +14,10 @@ import java.util.logging.Logger;
 public class SalesSAX extends DefaultHandler {
     private static final String CLASS_NAME = SalesSAX.class.getName();
     private final static Logger LOG = Logger.getLogger(CLASS_NAME);
-
     private SAXParser parser = null;
     private SAXParserFactory spf;
-
     private double totalSales;
     private boolean inSales;
-
-
     private String currentElement;
     private String id;
     private String name;
@@ -31,9 +28,8 @@ public class SalesSAX extends DefaultHandler {
 
     private String keyword;
 
-    private HashMap<String, Double> vEstado;
-    private HashMap<String, Double> vDepartamento;
-
+    private HashMap<String, Double> stateSales;
+    private HashMap<String, Double> deptSales;
     public SalesSAX() {
         super();
         spf = SAXParserFactory.newInstance();
@@ -42,8 +38,8 @@ public class SalesSAX extends DefaultHandler {
         // validar que el documento esté bien formado (well formed)
         spf.setValidating(true);
 
-        vEstado = new HashMap<>();
-        vDepartamento = new HashMap<>();
+        stateSales = new HashMap<>();
+        deptSales = new HashMap<>();
     }
 
     private void process(File file) {
@@ -75,29 +71,33 @@ public class SalesSAX extends DefaultHandler {
     @Override
     public void endDocument() throws SAXException {
         // Se proceso todo el documento, imprimir resultado
-        Set<Map.Entry<String, Double>> Estado = vEstado.entrySet();
-        Set<Map.Entry<String, Double>> Deps = vDepartamento.entrySet();
-        System.out.println("Ventas por Estado");
-        for (Map.Entry<String, Double> entry : Estado) {
-            System.out.printf("%-15.15s $%,9.2f\n", entry.getKey(), entry.getValue());
+        Set<Map.Entry<String, Double>> State = stateSales.entrySet();
+        Set<Map.Entry<String, Double>> Dept = deptSales.entrySet();
+
+        System.out.println("Tabla de Informacion Sobre Ventas");
+        System.out.println("-------------------------------------");
+        System.out.println("Estados");
+        for (Map.Entry<String, Double> entry : State) {
+            System.out.printf("%-10.10s $%,7.2f\n", entry.getKey(), entry.getValue());
         }
         System.out.println();
-        System.out.println("Ventas por Departamento");
-        for(Map.Entry<String, Double> entry : Deps){
-            System.out.printf("%-15.15s $%,9.2f\n", entry.getKey(), entry.getValue());
+        System.out.println("Departamentos");
+        for(Map.Entry<String, Double> entry : Dept){
+            System.out.printf("%-10.10s $%,7.2f\n", entry.getKey(), entry.getValue());
         }
+        System.out.println("-------------------------------------");
+        System.out.println();
+        System.out.printf("Ventas totales: $%,7.2f\n", totalSales);
     }
 
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes)
             throws SAXException {
-
         if (localName.equals("sale_record")) {
             inSales = true;
         }
         currentElement = localName;
     }
-
     @Override
     public void characters(char[] bytes, int start, int length) throws SAXException {
 
@@ -122,30 +122,29 @@ public class SalesSAX extends DefaultHandler {
                 break;
         }
     }
-
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
         if (localName.equals("sale_record")) {
-            double vs = 0.0;
+            double c = 0.0;
             try {
-                vs = Double.parseDouble(this.sales);
+                c = Double.parseDouble(this.sales);
             } catch (NumberFormatException e) {
                 LOG.severe(e.getMessage());
             }
             //TODO separar las Maps para estado y departamento
-            if (vEstado.containsKey(this.state)) {
-                double sum = vEstado.get(this.state);
-                vEstado.put(this.state, sum + vs);
+            if (stateSales.containsKey(this.state)) {
+                double sum = stateSales.get(this.state);
+                stateSales.put(this.state, sum + c);
             } else {
-                vEstado.put(this.state, vs);
+                stateSales.put(this.state, c);
             }
-            if (vDepartamento.containsKey(this.dept)) {
-                double sum = vDepartamento.get(this.dept);
-                vDepartamento.put(this.dept, sum + vs);
+            if (deptSales.containsKey(this.dept)) {
+                double sum = deptSales.get(this.dept);
+                deptSales.put(this.dept, sum + c);
             } else {
-                vDepartamento.put(this.dept, vs);
+                deptSales.put(this.dept, c);
             }
-            totalSales = totalSales + vs;
+            totalSales = totalSales + c;
             inSales = false;
         }
     }

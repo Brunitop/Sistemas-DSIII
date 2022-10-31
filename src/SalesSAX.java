@@ -84,9 +84,8 @@ public class SalesSAX extends DefaultHandler {
         System.out.println();
         System.out.println("Ventas por Departamento");
         for(Map.Entry<String, Double> entry : Deps){
-            System.out.printf("%-15.15s $,9.2f\n", entry.getKey(), entry.getValue());
+            System.out.printf("%-15.15s $%,9.2f\n", entry.getKey(), entry.getValue());
         }
-        System.out.printf("Ventas totales: $%,9.2f\n", totalSales);
     }
 
     @Override

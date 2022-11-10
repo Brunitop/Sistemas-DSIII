@@ -55,7 +55,6 @@ public class URLweb {
             while ((htmlLine = htmlReader.readLine()) != null) {
                 if (htmlLine.toLowerCase().contains(palabra)) {
                     pos = 0;
-                    counter++;
                     ArrayList<Character> lineList = new ArrayList<>();
                     for(char ch: htmlLine.toCharArray()){
                         lineList.add(ch);
@@ -75,17 +74,20 @@ public class URLweb {
                                     c = Character.toLowerCase(lineList.get(k));
                                     matched++;
                                     if(matched == palabraList.size()){
+                                        counter++;
                                         pos = i;
+                                        System.out.println("Posicion de ocurrencia " + counter + ": " + pos);
                                         break;
                                     }
                                 }
                             }
                             else {
+                                counter++;
                                 pos = i;
+                                System.out.println("Posicion de ocurrencia " + counter + ": " + pos);
                             }
                         }
                     }
-                    System.out.println("Posicion de ocurrencia " + counter + ": " + pos);
                 }
             }
             System.out.println("Veces que se repite la palabra: " + counter);
